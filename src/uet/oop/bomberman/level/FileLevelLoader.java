@@ -8,6 +8,7 @@ import uet.oop.bomberman.entities.character.enemy.Balloon;
 import uet.oop.bomberman.entities.character.enemy.Oneal;
 import uet.oop.bomberman.entities.tile.Grass;
 import uet.oop.bomberman.entities.tile.Portal;
+import uet.oop.bomberman.entities.tile.Wall;
 import uet.oop.bomberman.entities.tile.destroyable.Brick;
 import uet.oop.bomberman.entities.tile.item.BombItem;
 import uet.oop.bomberman.entities.tile.item.FlameItem;
@@ -74,10 +75,14 @@ public class FileLevelLoader extends LevelLoader {
         // @todo: hãy xóa nó khi hoàn thành chức năng load màn chơi từ tệp cấu hình
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
-                // thêm Wall
                 int pos = x + y * _width;
-                Sprite sprite = _map[y][x] == '#' ? Sprite.wall : Sprite.grass;
-                _board.addEntity(pos, new Grass(x, y, sprite));
+                // thêm Grass
+                _board.addEntity(pos, new Grass(x, y, Sprite.grass));
+
+                // thêm Wall
+                if (_map[y][x] == '#') {
+                    _board.addEntity(pos, new Wall(x, y, Sprite.wall));
+                }
 
                 // thêm Bomber
                 if (_map[y][x] == 'p') {

@@ -3,7 +3,12 @@ package uet.oop.bomberman.entities.character;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.bomb.Bomb;
+import uet.oop.bomberman.entities.bomb.Flame;
+import uet.oop.bomberman.entities.character.enemy.Enemy;
+import uet.oop.bomberman.entities.tile.Wall;
+import uet.oop.bomberman.entities.tile.destroyable.Brick;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
@@ -75,10 +80,14 @@ public class Bomber extends Character {
         // @todo: nếu 3 điều kiện trên thỏa mãn thì thực hiện đặt bom bằng placeBomb()
         // @todo: sau khi đặt, nhớ giảm số lượng Bomb Rate và reset _timeBetweenPutBombs về 0
         int bombRate = Game.getBombRate();
-        if (_input.space && _timeBetweenPutBombs < 0 && bombRate > 1) {
-            placeBomb(Coordinates.pixelToTile(_x), Coordinates.pixelToTile(_y));
+
+        if (_input.space && _timeBetweenPutBombs < 0 && bombRate >= 1) {
+            double centerX = _x + _sprite.getRealWidth() / 2;
+            double centerY = _y - _sprite.getRealHeight() / 2;
+            placeBomb(Coordinates.pixelToTile(centerX), Coordinates.pixelToTile(centerY));
+//            System.out.println(_x + " " + _y);
             Game.addBombRate(-1);
-            _timeBetweenPutBombs = 0;
+            _timeBetweenPutBombs = 30;  // Tương ứng với 30 khung hình.
         }
     }
 
@@ -121,14 +130,15 @@ public class Bomber extends Character {
         // @todo: xử lý nhận tín hiệu điều khiển hướng đi từ _input và gọi move() để thực hiện di chuyển
         // @todo: nhớ cập nhật lại giá trị cờ _moving khi thay đổi trạng thái di chuyển
         _moving = true;
+
         if (_input.up) {
-            move(_x, _y - 1);
+            move(0, -Game.getBomberSpeed());
         } else if (_input.down) {
-            move(_x, _y + 1);
+            move(0, Game.getBomberSpeed());
         } else if (_input.left) {
-            move(_x - 1, _y);
+            move(-Game.getBomberSpeed(), 0);
         } else if (_input.right) {
-            move(_x + 1, _y);
+            move(Game.getBomberSpeed(), 0);
         } else {
             _moving = false;
         }
@@ -136,28 +146,93 @@ public class Bomber extends Character {
 
     @Override
     public boolean canMove(double x, double y) {
-        // TODO: kiểm tra có đối tượng tại vị trí chuẩn bị di chuyển đến và có thể di chuyển tới đó hay không
-        return true;
+        // @todo: kiểm tra có đối tượng tại vị trí chuẩn bị di chuyển đến và có thể di chuyển tới đó hay không
+        int tileX = Coordinates.pixelToTile(x);
+        int tileY = Coordinates.pixelToTile(y);
+//        System.out.println(tileX + " " + tileY);
+        Entity nextEntity = _board.getEntity(tileX, tileY, this);
+        return collide(nextEntity);
+    }
+
+    public void moveCenterX() {
+        int pixelOfEntity = Coordinates.tileToPixel(1);
+        double centerX = _x + _sprite.getRealWidth() / 2;
+        int tileCenterX = Coordinates.pixelToTile(centerX);
+        _x = Coordinates.tileToPixel(tileCenterX) + pixelOfEntity / 2 - _sprite.getRealWidth() / 2;
+    }
+
+    public void moveCenterY() {
+        int pixelOfEntity = Coordinates.tileToPixel(1);
+        double centerY = _y - _sprite.getRealHeight() / 2;
+        int tileCenterY = Coordinates.pixelToTile(centerY);
+        _y = Coordinates.tileToPixel(tileCenterY) + pixelOfEntity / 2 + _sprite.getRealHeight() / 2;
+    }
+
+    public void autoMoveCenter() {
+        int pixelOfEntity = Coordinates.tileToPixel(1);
+        double centerX = _x + _sprite.getRealWidth() / 2;
+        double centerY = _y - _sprite.getRealHeight() / 2;
+
+        boolean canMoveTop = canMove(centerX, centerY - pixelOfEntity);
+        boolean canMoveDown = canMove(centerX, centerY + pixelOfEntity);
+        boolean canMoveLeft = canMove(centerX - pixelOfEntity, centerY);
+        boolean canMoveRight = canMove(centerX + pixelOfEntity, centerY);
+
+        boolean contactTop = canMove(centerX, centerY - pixelOfEntity / 2);
+        boolean contactDown = canMove(centerX, centerY + pixelOfEntity / 2);
+        boolean contactLeft = canMove(centerX - pixelOfEntity / 2, centerY);
+        boolean contactRight = canMove(centerX + pixelOfEntity / 2, centerY);
+
+        // Trường hợp đi vào giữa hai khe thì tự động căn giữa.
+        if ((!canMoveLeft) && (!canMoveRight)) moveCenterX();
+        if ((!canMoveTop) && (!canMoveDown)) moveCenterY();
+
+        // Các trường hợp đi một nửa người vào tường cũng tự động căn giữa.
+        if (_direction == 0 && !contactTop) moveCenterY();
+        if (_direction == 1 && !contactRight) moveCenterX();
+        if (_direction == 2 && !contactDown) moveCenterY();
+        if (_direction == 3 && !contactLeft) moveCenterX();
     }
 
     @Override
     public void move(double xa, double ya) {
         // @todo: sử dụng canMove() để kiểm tra xem có thể di chuyển tới điểm đã tính toán hay không và thực hiện thay đổi tọa độ _x, _y
         // @todo: nhớ cập nhật giá trị _direction sau khi di chuyển : up, right, down, left -> 0, 1, 2, 3
-        if (canMove(xa, ya)) {
-            if (xa > _x) _direction = 1;
-            if (xa < _x) _direction = 3;
-            if (ya > _y) _direction = 2;
-            if (ya < _y) _direction = 0;
-            _x = xa;
-            _y = ya;
+        // TODO: Di chuyển nhân vật ra giữa.
+
+        // Tính tọa độ tâm người
+        double centerX = _x + _sprite.getRealWidth() / 2;
+        double centerY = _y - _sprite.getRealHeight() / 2;
+
+        if (xa > 0) _direction = 1;
+        if (xa < 0) _direction = 3;
+        if (ya > 0) _direction = 2;
+        if (ya < 0) _direction = 0;
+        if (canMove(centerX + xa, centerY + ya)) {
+            _x += xa;
+            _y += ya;
         }
+
+        autoMoveCenter();
     }
 
     @Override
     public boolean collide(Entity e) {
-        // TODO: xử lý va chạm với Flame
-        // TODO: xử lý va chạm với Enemy
+        // @todo: xử lý va chạm với Flame
+        // @todo: xử lý va chạm với Enemy
+        if (e instanceof Flame) {
+            this.kill();
+            return true;
+        }
+
+        if (e instanceof Enemy) {
+            this.kill();
+            return true;
+        }
+
+        if (e instanceof Wall) return false;
+        if (e instanceof Brick) return false;
+        if (e instanceof LayeredEntity) return e.collide(this);
 
         return true;
     }

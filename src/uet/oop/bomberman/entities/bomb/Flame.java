@@ -45,6 +45,11 @@ public class Flame extends Entity {
 		boolean last;
 
 		// TODO: tạo các segment dưới đây
+		int x = (int) _x;
+		int y = (int) _y;
+		for (int i = 0; i < _flameSegments.length; i++) {
+
+		}
 	}
 
 	/**
@@ -53,7 +58,7 @@ public class Flame extends Entity {
 	 */
 	private int calculatePermitedDistance() {
 		// TODO: thực hiện tính toán độ dài của Flame
-		return 1;
+		return _radius;
 	}
 	
 	public FlameSegment flameSegmentAt(int x, int y) {

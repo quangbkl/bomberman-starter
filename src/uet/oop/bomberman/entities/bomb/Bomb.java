@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities.bomb;
 
 import uet.oop.bomberman.Board;
+import uet.oop.bomberman.Game;
 import uet.oop.bomberman.entities.AnimatedEntitiy;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.Character;
@@ -83,10 +84,11 @@ public class Bomb extends AnimatedEntitiy {
         // @todo: tạo các Flame
         // @todo: radius flame.
 
-        Flame flame0 = new Flame((int) _x, (int) _y, 0, 1, _board);
-        Flame flame1 = new Flame((int) _x, (int) _y, 1, 1, _board);
-        Flame flame2 = new Flame((int) _x, (int) _y, 2, 1, _board);
-        Flame flame3 = new Flame((int) _x, (int) _y, 3, 1, _board);
+        int radius = Game.getBombRadius();
+        Flame flame0 = new Flame((int) _x, (int) _y, 0, radius, _board);
+        Flame flame1 = new Flame((int) _x, (int) _y, 1, radius, _board);
+        Flame flame2 = new Flame((int) _x, (int) _y, 2, radius, _board);
+        Flame flame3 = new Flame((int) _x, (int) _y, 3, radius, _board);
         _flames = new Flame[]{flame0, flame1, flame2, flame3};
     }
 

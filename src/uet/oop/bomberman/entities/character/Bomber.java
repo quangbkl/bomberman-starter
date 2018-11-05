@@ -207,6 +207,15 @@ public class Bomber extends Character {
         autoMoveCenter();
     }
 
+    public boolean handleCollidePortal() {
+        if (_board.detectNoEnemies()) {
+            _board.nextLevel();
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public boolean collide(Entity e) {
         // @todo: xử lý va chạm với Flame

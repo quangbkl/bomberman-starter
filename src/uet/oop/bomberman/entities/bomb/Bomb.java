@@ -22,6 +22,7 @@ public class Bomb extends AnimatedEntitiy {
         _y = y;
         _board = board;
         _sprite = Sprite.bomb;
+        _flames = new Flame[0];
     }
 
     @Override
@@ -31,7 +32,6 @@ public class Bomb extends AnimatedEntitiy {
         else {
             if (!_exploded) {
                 explode();
-                _exploded = false;
             } else
                 updateFlames();
 
@@ -80,8 +80,8 @@ public class Bomb extends AnimatedEntitiy {
         Character character = _board.getCharacterAtExcluding((int) _x, (int) _y, null);
         if (character != null) character.kill();
 
-        // TODO: tạo các Flame
-        // TODO: radius flame.
+        // @todo: tạo các Flame
+        // @todo: radius flame.
 
         Flame flame0 = new Flame((int) _x, (int) _y, 0, 1, _board);
         Flame flame1 = new Flame((int) _x, (int) _y, 1, 1, _board);

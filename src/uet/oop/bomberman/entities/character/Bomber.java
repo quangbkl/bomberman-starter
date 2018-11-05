@@ -173,32 +173,23 @@ public class Bomber extends Character {
         double centerX = _x + _sprite.getRealWidth() / 2;
         double centerY = _y - _sprite.getRealHeight() / 2;
 
-        boolean canMoveTop = canMove(centerX, centerY - pixelOfEntity);
-        boolean canMoveDown = canMove(centerX, centerY + pixelOfEntity);
-        boolean canMoveLeft = canMove(centerX - pixelOfEntity, centerY);
-        boolean canMoveRight = canMove(centerX + pixelOfEntity, centerY);
-
-        boolean contactTop = canMove(centerX, centerY - pixelOfEntity / 2);
-        boolean contactDown = canMove(centerX, centerY + pixelOfEntity / 2);
-        boolean contactLeft = canMove(centerX - pixelOfEntity / 2, centerY);
-        boolean contactRight = canMove(centerX + pixelOfEntity / 2, centerY);
-
-        // Trường hợp đi vào giữa hai khe thì tự động căn giữa.
-        if ((!canMoveLeft) && (!canMoveRight)) moveCenterX();
-        if ((!canMoveTop) && (!canMoveDown)) moveCenterY();
+        boolean contactTop = !canMove(centerX, centerY - pixelOfEntity / 2);
+        boolean contactDown = !canMove(centerX, centerY + pixelOfEntity / 2);
+        boolean contactLeft = !canMove(centerX - pixelOfEntity / 2, centerY);
+        boolean contactRight = !canMove(centerX + pixelOfEntity / 2, centerY);
 
         // Các trường hợp đi một nửa người vào tường cũng tự động căn giữa.
-        if (_direction == 0 && !contactTop) moveCenterY();
-        if (_direction == 1 && !contactRight) moveCenterX();
-        if (_direction == 2 && !contactDown) moveCenterY();
-        if (_direction == 3 && !contactLeft) moveCenterX();
+        if (_direction != 0 && contactDown) moveCenterY();
+        if (_direction != 1 && contactLeft) moveCenterX();
+        if (_direction != 2 && contactTop) moveCenterY();
+        if (_direction != 3 && contactRight) moveCenterX();
     }
 
     @Override
     public void move(double xa, double ya) {
         // @todo: sử dụng canMove() để kiểm tra xem có thể di chuyển tới điểm đã tính toán hay không và thực hiện thay đổi tọa độ _x, _y
         // @todo: nhớ cập nhật giá trị _direction sau khi di chuyển : up, right, down, left -> 0, 1, 2, 3
-        // TODO: Di chuyển nhân vật ra giữa.
+        // @todo: Di chuyển nhân vật ra giữa.
 
         // Tính tọa độ tâm người
         double centerX = _x + _sprite.getRealWidth() / 2;

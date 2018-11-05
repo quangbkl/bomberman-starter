@@ -59,7 +59,7 @@ public class LayeredEntity extends Entity {
 	public boolean collide(Entity e) {
 		// @todo: lấy entity trên cùng ra để xử lý va chạm
 		Entity topEntity = getTopEntity();
-		return e.collide(topEntity);
+		return topEntity.collide(e);
 	}
 
 }

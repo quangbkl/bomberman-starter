@@ -29,6 +29,8 @@ public class DestroyableTile extends Tile {
 			else
 				remove();
 		}
+
+//		Entity entity = _b
 	}
 
 	public void destroy() {

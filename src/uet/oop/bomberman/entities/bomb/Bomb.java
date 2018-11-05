@@ -108,7 +108,7 @@ public class Bomb extends AnimatedEntitiy {
     public boolean collide(Entity e) {
         // TODO: xử lý khi Bomber đi ra sau khi vừa đặt bom (_allowedToPassThru)
         // @todo: xử lý va chạm với Flame của Bomb khác
-        if (e instanceof Flame) explode();
+        if (e instanceof Flame && !_exploded) explode();
         return false;
     }
 }

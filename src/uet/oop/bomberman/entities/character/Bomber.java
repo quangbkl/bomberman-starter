@@ -154,6 +154,20 @@ public class Bomber extends Character {
         return collide(nextEntity);
     }
 
+
+    public boolean canMoveNotCollide(double x, double y) {
+        int tileX = Coordinates.pixelToTile(x);
+        int tileY = Coordinates.pixelToTile(y);
+        Entity nextEntity = _board.getEntity(tileX, tileY, this);
+        if (nextEntity instanceof Wall) return false;
+        if (nextEntity instanceof LayeredEntity) {
+            Entity topEntity = ((LayeredEntity) nextEntity).getTopEntity();
+            if (topEntity instanceof Brick) return false;
+        }
+        return true;
+    }
+
+
     public void moveCenterX() {
         int pixelOfEntity = Coordinates.tileToPixel(1);
         double centerX = _x + _sprite.getRealWidth() / 2;
@@ -173,10 +187,10 @@ public class Bomber extends Character {
         double centerX = _x + _sprite.getRealWidth() / 2;
         double centerY = _y - _sprite.getRealHeight() / 2;
 
-        boolean contactTop = !canMove(centerX, centerY - pixelOfEntity / 2);
-        boolean contactDown = !canMove(centerX, centerY + pixelOfEntity / 2);
-        boolean contactLeft = !canMove(centerX - pixelOfEntity / 2, centerY);
-        boolean contactRight = !canMove(centerX + pixelOfEntity / 2, centerY);
+        boolean contactTop = !canMoveNotCollide(centerX, centerY - pixelOfEntity / 2);
+        boolean contactDown = !canMoveNotCollide(centerX, centerY + pixelOfEntity / 2);
+        boolean contactLeft = !canMoveNotCollide(centerX - pixelOfEntity / 2, centerY);
+        boolean contactRight = !canMoveNotCollide(centerX + pixelOfEntity / 2, centerY);
 
         // Các trường hợp đi một nửa người vào tường cũng tự động căn giữa.
         if (_direction != 0 && contactDown) moveCenterY();

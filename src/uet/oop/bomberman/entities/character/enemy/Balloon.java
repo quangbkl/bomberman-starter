@@ -6,8 +6,7 @@ import uet.oop.bomberman.entities.character.enemy.ai.AILow;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Balloon extends Enemy {
-	
-	
+
 	public Balloon(int x, int y, Board board) {
 		super(x, y, board, Sprite.balloom_dead, Game.getBomberSpeed() / 2, 100);
 		

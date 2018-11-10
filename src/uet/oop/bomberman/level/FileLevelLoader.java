@@ -4,8 +4,7 @@ import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.character.Bomber;
-import uet.oop.bomberman.entities.character.enemy.Balloon;
-import uet.oop.bomberman.entities.character.enemy.Oneal;
+import uet.oop.bomberman.entities.character.enemy.*;
 import uet.oop.bomberman.entities.tile.Grass;
 import uet.oop.bomberman.entities.tile.Portal;
 import uet.oop.bomberman.entities.tile.Wall;
@@ -44,7 +43,6 @@ public class FileLevelLoader extends LevelLoader {
             int dataLevel = Integer.parseInt(firstLine[0]);
             int dataHeight = Integer.parseInt(firstLine[1]);
             int dataWidth = Integer.parseInt(firstLine[2]);
-            System.out.println("Level: " + dataLevel + ", height: " + dataHeight + ", width: " + dataWidth);
 
             _map = new char[dataHeight][dataWidth];
 
@@ -101,6 +99,41 @@ public class FileLevelLoader extends LevelLoader {
                 if (_map[y][x] == '2') {
                     int xE = x, yE = y;
                     _board.addCharacter(new Oneal(Coordinates.tileToPixel(xE), Coordinates.tileToPixel(yE) + Game.TILES_SIZE, _board));
+                    _board.addEntity(xE + yE * _width, new Grass(xE, yE, Sprite.grass));
+                }
+                if (_map[y][x] == '3') {
+                    int xE = x, yE = y;
+                    _board.addCharacter(new Doll(Coordinates.tileToPixel(xE), Coordinates.tileToPixel(yE) + Game.TILES_SIZE, _board));
+                    _board.addEntity(xE + yE * _width, new Grass(xE, yE, Sprite.grass));
+                }
+                if (_map[y][x] == '4') {
+                    int xE = x, yE = y;
+                    _board.addCharacter(new Kondoria(Coordinates.tileToPixel(xE), Coordinates.tileToPixel(yE) + Game.TILES_SIZE, _board));
+                    _board.addEntity(xE + yE * _width, new Grass(xE, yE, Sprite.grass));
+                }
+                if (_map[y][x] == '5') {
+                    int xE = x, yE = y;
+                    _board.addCharacter(new Minvo(Coordinates.tileToPixel(xE), Coordinates.tileToPixel(yE) + Game.TILES_SIZE, _board));
+                    _board.addEntity(xE + yE * _width, new Grass(xE, yE, Sprite.grass));
+                }
+                if (_map[y][x] == '6') {
+                    int xE = x, yE = y;
+                    _board.addCharacter(new Doria(Coordinates.tileToPixel(xE), Coordinates.tileToPixel(yE) + Game.TILES_SIZE, _board));
+                    _board.addEntity(xE + yE * _width, new Grass(xE, yE, Sprite.grass));
+                }
+                if (_map[y][x] == '7') {
+                    int xE = x, yE = y;
+                    _board.addCharacter(new Ovape(Coordinates.tileToPixel(xE), Coordinates.tileToPixel(yE) + Game.TILES_SIZE, _board));
+                    _board.addEntity(xE + yE * _width, new Grass(xE, yE, Sprite.grass));
+                }
+                if (_map[y][x] == '8') {
+                    int xE = x, yE = y;
+                    _board.addCharacter(new Pontan(Coordinates.tileToPixel(xE), Coordinates.tileToPixel(yE) + Game.TILES_SIZE, _board));
+                    _board.addEntity(xE + yE * _width, new Grass(xE, yE, Sprite.grass));
+                }
+                if (_map[y][x] == '9') {
+                    int xE = x, yE = y;
+                    _board.addCharacter(new Pass(Coordinates.tileToPixel(xE), Coordinates.tileToPixel(yE) + Game.TILES_SIZE, _board));
                     _board.addEntity(xE + yE * _width, new Grass(xE, yE, Sprite.grass));
                 }
 

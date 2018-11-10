@@ -73,21 +73,21 @@ public class AudioGame {
         if (threadDeath != null && !threadDeath.isAlive())
             threadDeath.stop();
         if (threadExplosion != null && !threadExplosion.isAlive())
-            threadDeath.stop();
+            threadExplosion.stop();
     }
 
     public static void suspendAudioEffect(Thread... notSuspend) {
         if (threadDeath != null)
             threadDeath.suspend();
         if (threadExplosion != null)
-            threadDeath.suspend();
+            threadExplosion.suspend();
     }
 
     public static void resumeAudioEffect(Thread... notSuspend) {
         if (threadDeath != null)
             threadDeath.resume();
         if (threadExplosion != null)
-            threadDeath.resume();
+            threadExplosion.resume();
     }
 
     public static void stopAllAudio(Thread... notStop) {

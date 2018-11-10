@@ -3,12 +3,12 @@ package uet.oop.bomberman.entities.character.enemy.ai;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.enemy.Enemy;
 
-public class AIMedium extends AI {
+public class AIMedium1 extends AI {
     Bomber _bomber;
     Enemy _e;
     AILow aiLow;
 
-    public AIMedium(Bomber bomber, Enemy e) {
+    public AIMedium1(Bomber bomber, Enemy e) {
         _bomber = bomber;
         _e = e;
         aiLow = new AILow();
@@ -16,14 +16,24 @@ public class AIMedium extends AI {
 
     @Override
     public int calculateDirection() {
-        // @todo: cài đặt thuật toán tìm đường đi
         int random = (int) (Math.random() * 3);
         return calculateDirection(random);
     }
 
     public int calculateDirection(int random) {
-        if (random == 0) return calculateColDirection();
-        if (random == 1) return calculateRowDirection();
+        if (random == 0) {
+            int calculateCol = calculateColDirection();
+            if (calculateCol != -1) return calculateCol;
+            int calculateRow = calculateRowDirection();
+            if (calculateRow != -1) return calculateRow;
+        }
+
+        if (random == 1) {
+            int calculateRow = calculateRowDirection();
+            if (calculateRow != -1) return calculateRow;
+            int calculateCol = calculateColDirection();
+            if (calculateCol != -1) return calculateCol;
+        }
 
         return aiLow.calculateDirection();
     }

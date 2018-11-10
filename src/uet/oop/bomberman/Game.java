@@ -151,7 +151,7 @@ public class Game extends Canvas {
                 updates = 0;
                 frames = 0;
 
-                if (_board.getShow() == 2 || _board.getShow() == 4)
+                if (_board.getShow() == 2)
                     --_screenDelay;
             }
         }

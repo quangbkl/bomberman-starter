@@ -88,10 +88,12 @@ public class Board implements IRender {
     }
 
     public void handleInputPaused() {
-        if (_input.enter) {
-            if (_screenToShow == 1) resetGame();
+        if (_screenToShow == 2) return;
 
+        if (_input.enter) {
             _game.play();
+            if (_screenToShow == 3) AudioGame.resumeAudioEffect();
+            if (_screenToShow == 1) resetGame();
         }
     }
 
@@ -155,6 +157,7 @@ public class Board implements IRender {
         _screenToShow = 3;
         _game.resetScreenDelay();
         _game.pause();
+        AudioGame.suspendAudioEffect();
     }
 
     public boolean detectNoEnemies() {

@@ -155,7 +155,7 @@ public class Bomber extends Character {
     }
 
 
-    public boolean canMoveNotCollide(double x, double y) {
+    private boolean canMoveNotCollide(double x, double y) {
         int tileX = Coordinates.pixelToTile(x);
         int tileY = Coordinates.pixelToTile(y);
         Entity nextEntity = _board.getEntity(tileX, tileY, this);
@@ -182,7 +182,7 @@ public class Bomber extends Character {
         _y = Coordinates.tileToPixel(tileCenterY) + pixelOfEntity / 2 + _sprite.getRealHeight() / 2;
     }
 
-    public void autoMoveCenter() {
+    private void autoMoveCenter() {
         int pixelOfEntity = Coordinates.tileToPixel(1);
         double centerX = _x + _sprite.getRealWidth() / 2;
         double centerY = _y - _sprite.getRealHeight() / 2;

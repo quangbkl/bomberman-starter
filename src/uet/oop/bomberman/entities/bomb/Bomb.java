@@ -7,6 +7,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.Character;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.output.AudioGame;
 
 public class Bomb extends AnimatedEntitiy {
 
@@ -90,6 +91,8 @@ public class Bomb extends AnimatedEntitiy {
         Flame flame2 = new Flame((int) _x, (int) _y, 2, radius, _board);
         Flame flame3 = new Flame((int) _x, (int) _y, 3, radius, _board);
         _flames = new Flame[]{flame0, flame1, flame2, flame3};
+
+        AudioGame.playExplosion();
     }
 
     public FlameSegment flameAt(int x, int y) {

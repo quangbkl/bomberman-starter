@@ -52,6 +52,8 @@ public class Bomber extends Character {
         calculateMove();
 
         detectPlaceBomb();
+
+//        System.out.println(_board.getBombAt(getXTile(), getYTile()));
     }
 
     @Override

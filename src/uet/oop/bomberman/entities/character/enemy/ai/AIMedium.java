@@ -4,9 +4,9 @@ import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.enemy.Enemy;
 
 public class AIMedium extends AI {
-    Bomber _bomber;
-    Enemy _e;
-    AILow aiLow;
+    private Bomber _bomber;
+    private Enemy _e;
+    private AILow aiLow;
 
     public AIMedium(Bomber bomber, Enemy e) {
         _bomber = bomber;

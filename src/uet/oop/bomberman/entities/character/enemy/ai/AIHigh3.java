@@ -4,12 +4,12 @@ import uet.oop.bomberman.Board;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.enemy.Enemy;
 
-public class AIHigh extends AI {
-    private AIMedium aiMedium;
+public class AIHigh3 extends AI {
+    private AIMedium3 aiMedium3;
     private AIEvade aiEvade;
 
-    public AIHigh(Bomber bomber, Enemy e, Board b) {
-        aiMedium = new AIMedium(bomber, e);
+    public AIHigh3(Bomber bomber, Enemy e, Board b) {
+        aiMedium3 = new AIMedium3(bomber, e);
         aiEvade = new AIEvade(bomber, e, b);
     }
 
@@ -18,6 +18,6 @@ public class AIHigh extends AI {
         int directionEvade = aiEvade.calculateDirection();
         if (directionEvade != -1) return directionEvade;
 //        System.out.println(directionEvade);
-        return aiMedium.calculateDirection();
+        return aiMedium3.calculateDirection();
     }
 }

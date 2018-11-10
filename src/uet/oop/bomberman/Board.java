@@ -48,13 +48,17 @@ public class Board implements IRender {
 
     @Override
     public void update() {
-        if (_game.isPaused()) return;
+        if (_game.isPaused()) {
+            handleInputPaused();
+            return;
+        }
 
         updateEntities();
         updateCharacters();
         updateBombs();
         updateMessages();
         detectEndGame();
+        detectPaused();
 
         for (int i = 0; i < _characters.size(); i++) {
             Character a = _characters.get(i);
@@ -81,6 +85,31 @@ public class Board implements IRender {
         renderBombs(screen);
         renderCharacter(screen);
 
+    }
+
+    public void handleInputPaused() {
+        if (_input.enter) {
+            if (_screenToShow == 1) resetGame();
+
+            _game.play();
+        }
+    }
+
+    public void resetGame() {
+        resetProperties();
+        loadLevel(1);
+    }
+
+    private void resetProperties() {
+        _points = Game.POINTS;
+
+        Game.bomberSpeed = 1.0;
+        Game.bombRadius = 1;
+        Game.bombRate = 1;
+    }
+
+    public void restartLevel() {
+        loadLevel(_levelLoader.getLevel());
     }
 
     public void nextLevel() {
@@ -117,6 +146,17 @@ public class Board implements IRender {
         _game.pause();
     }
 
+    protected void detectPaused() {
+        if (_input.backSpace)
+            pausedGame();
+    }
+
+    public void pausedGame() {
+        _screenToShow = 3;
+        _game.resetScreenDelay();
+        _game.pause();
+    }
+
     public boolean detectNoEnemies() {
         int total = 0;
         for (int i = 0; i < _characters.size(); i++) {
@@ -131,6 +171,7 @@ public class Board implements IRender {
         switch (_screenToShow) {
             case 1:
                 _screen.drawEndGame(g, _points);
+                AudioGame.playGameOver();
                 break;
             case 2:
                 _screen.drawChangeLevel(g, _levelLoader.getLevel());

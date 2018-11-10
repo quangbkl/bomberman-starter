@@ -13,6 +13,7 @@ import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
 import uet.oop.bomberman.level.Coordinates;
+import uet.oop.bomberman.output.AudioGame;
 
 import java.util.Iterator;
 import java.util.List;
@@ -115,6 +116,7 @@ public class Bomber extends Character {
     public void kill() {
         if (!_alive) return;
         _alive = false;
+        AudioGame.playDeath();
     }
 
     @Override

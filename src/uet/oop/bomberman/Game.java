@@ -137,7 +137,6 @@ public class Game extends Canvas {
                 }
 
                 renderScreen();
-//                AudioGame.playWait();
             } else {
                 renderGame();
                 AudioGame.playBackground();
@@ -152,7 +151,7 @@ public class Game extends Canvas {
                 updates = 0;
                 frames = 0;
 
-                if (_board.getShow() == 2)
+                if (_board.getShow() == 2 || _board.getShow() == 4)
                     --_screenDelay;
             }
         }
@@ -198,4 +197,7 @@ public class Game extends Canvas {
         _paused = true;
     }
 
+    public void play() {
+        _paused = false;
+    }
 }
